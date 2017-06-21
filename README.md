@@ -14,3 +14,4 @@
        ;  Q  J  C  X  B  M  W  V  Z  /
 
 ・[こちら](https://github.com/yudai-uehara/Key-Layouts)では色々な配列のスクリプトファイルを配布しています。
+・[AutoHotKey](https://autohotkey.com/)とはキーリマップソフトの事です。
