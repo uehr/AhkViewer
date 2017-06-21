@@ -1,9 +1,9 @@
 # AhkViewer
-##AutoHotKeyのスクリプトを解析し、可視化し易い形式で出力
+## AutoHotKeyのスクリプトを解析し、可視化し易い形式で出力
 
 >実行例
 
-    AhkViewer test.Ahk
+    AhkViewer test.ahk
 
 >結果
 
