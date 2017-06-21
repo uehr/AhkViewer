@@ -1,5 +1,5 @@
 # AhkViewer
-## AutoHotKeyのスクリプトを解析し、可視化し易い形式で出力
+## AutoHotKeyのスクリプトを解析し、キー配列のビジョンを出力
 
 >実行例
 
@@ -12,3 +12,5 @@
      :  ,  .  P  Y  F  G  K  R  L  @  [
       A  O  E  U  I  D  H  T  N  S  -  ]
        ;  Q  J  C  X  B  M  W  V  Z  /
+
+・[こちら](https://github.com/yudai-uehara/Key-Layouts)では色々な配列のスクリプトファイルを配布しています。
