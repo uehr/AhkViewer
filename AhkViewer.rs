@@ -4,10 +4,12 @@ use std::path::Path;
 use std::collections::HashMap;
 use std::env;
 
-fn main() {
+fn main(){
     let exe_arg = env::args().collect::<Vec<String>>();
+    if exe_arg.len() < 2 {
+      panic!("スクリプトのパスを指定して下さい 例) >AhkViewer foo.ahk");
+    }
     let path_str = &exe_arg[1];
-
     let path = Path::new(path_str);
 
     let mut file = match File::open(&path) {
@@ -21,10 +23,9 @@ fn main() {
         Ok(_) => {},
     }
 
-    println!(" ➖{}➖",get_file_name(path_str));
+    println!(" ➖ {} ➖",get_file_name(path_str));
     let layout = set_layout(file_content.replace(" ",""));
     print_layout(layout);
-
 }
 
 fn to_char_upper(from:String) -> char {

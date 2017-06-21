@@ -7,7 +7,7 @@
 
 >結果
 
-    ➖test.ahk➖
+    ➖ test.ahk ➖
     1  2  3  4  5  6  7  8  9  0  -  ^  /
      :  ,  .  P  Y  F  G  K  R  L  @  [
       A  O  E  U  I  D  H  T  N  S  -  ]
