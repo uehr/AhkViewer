@@ -25,7 +25,22 @@ fn main(){
 
     println!(" ➖ {} ➖",get_file_name(path_str));
     let layout = set_layout(file_content.replace(" ",""));
-    print_layout(layout);
+    print_layout(layout,|before_key,after_key,indent_count|{
+        print!(" {} ",after_key);
+        if indent_count < 3 {
+           match before_key {
+               '\\' | '[' | ']' => {
+                   print!("\n ");
+                   for _ in 0..indent_count {
+                       print!(" ");
+                   }
+                   return indent_count + 1
+               },
+               _ => {},
+           }
+        }
+      return indent_count
+    });
 }
 
 fn to_char_upper(from:String) -> char {
@@ -87,34 +102,21 @@ fn set_layout(file_content:String) -> HashMap<char,char>{
     layout
 }
 
-
-fn print_layout(layout:HashMap<char,char>){
+fn print_layout<C>(layout:HashMap<char,char>,closure:C) where C : Fn(char,char,i32)->i32{
   let default_layout = r"1234567890-^\QWERTYUIOP@[ASDFGHJKL;:]ZXCVBNM,./\".to_string();
-  let mut indent_count = 0;
-  print!(" ");
-
+  //クロージャ内で使用可能な、反復処理とは独立した変数
+  let mut int_buff = 0;
+  //デフォルトのレイアウト順にクロージャにbeforeキーとafterキーを渡す
   for default_key in default_layout.chars() {
      match layout.get(&default_key) {
-         Some(key) => {
-           print!("{}  ",key);
+         Some(after_key) => {
+           int_buff = closure(default_key,*after_key,int_buff);
          },
          None => {
            println!("null")
          }
      }
 
-   if indent_count < 3 {
-       match default_key {
-           '\\' | '[' | ']' => {
-               print!("\n ");
-               indent_count += 1;
-               for _ in 0..indent_count {
-                   print!(" ");
-               }
-           },
-           _ => {},
-      };
-    }
   }
 
 }
