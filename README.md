@@ -13,6 +13,6 @@
       A  O  E  U  I  D  H  T  N  S  -  ]
        ;  Q  J  C  X  B  M  W  V  Z  /
 
-・JISキーボードのみの対応です。
+・JISキーボードのみの対応です。  
 ・[こちら](https://github.com/yudai-uehara/Key-Layouts)では色々なキー配列のスクリプトを配布しています。  
 ・[AutoHotKey](https://autohotkey.com/)とはキーリマップソフトの事です。
