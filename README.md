@@ -15,5 +15,5 @@
 
 ・JISキーボードのみの対応です。  
 ・[こちら](https://github.com/yudai-uehara/Key-Layouts)では色々なキー配列のスクリプトを配布しています。  
-・[AutoHotKey](https://autohotkey.com/)とはキーリマップソフトの事です。
+・[AutoHotKey](https://autohotkey.com/)とはキーリマップソフトの事です。  
 ・print_layout関数は、渡すクロージャによってレイアウトの表示形式を容易に編集可能です。
