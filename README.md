@@ -3,7 +3,7 @@
 
 >実行例
 
-    <p>>AhkViewer test.ahk</p>
+    >AhkViewer test.ahk
 
 >結果
 
