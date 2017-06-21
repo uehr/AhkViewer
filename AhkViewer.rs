@@ -32,8 +32,14 @@ fn to_char_upper(from:String) -> char {
 }
 
 fn get_file_name(file_path:&String) -> String{
-    let splited_buff = file_path.split(r"\").collect::<Vec<&str>>();
-    splited_buff[splited_buff.len() -1].to_string()
+    let mut file_name = String::new();
+    for c in file_path.chars() {
+      if file_name.contains(r"\") || file_name.contains("/") {
+          file_name = String::new();
+      }
+      file_name += &*c.to_string();
+    }
+    file_name
 }
 
 fn is_target_line(line:String) -> bool {
