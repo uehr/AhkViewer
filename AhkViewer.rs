@@ -26,21 +26,21 @@ fn main(){
     println!(" ➖ {} ➖",get_file_name(path_str));
     let layout = set_layout(file_content.replace(" ",""));
     print_layout(layout,|before_key,after_key,indent_count|{
-        print!(" {} ",after_key);
-        if indent_count < 3 {
-           match before_key {
-               '\\' | '[' | ']' => {
-                   print!("\n ");
-                   for _ in 0..indent_count {
-                       print!(" ");
-                   }
-                   return indent_count + 1
-               },
-               _ => {},
+           //デフォルトレイアウトの端に到達した場合「#」が渡される
+           if before_key == '#' {
+             if indent_count < 3 {
+               print!("\n ");
+               for _ in 0..indent_count {
+                   print!(" ");
+               }
+               return indent_count + 1
+             }
+           }else{
+             print!(" {} ",after_key);
            }
+           return indent_count
         }
-      return indent_count
-    });
+    );
 }
 
 fn to_char_upper(from:String) -> char {
@@ -60,7 +60,7 @@ fn get_file_name(file_path:&String) -> String{
 
 fn is_target_line(line:String) -> bool {
     let line_len = line.chars().count();
-    //コロン、セミコロン等の特殊外に対応、vkBAsc028はコロンのキーコード
+    //コロン、セミコロン等の特殊例に対応、vkBAsc028はコロンのキーコード
     if (line != "" && line.contains("::") && line_len <= 5) ||
     (line.contains("`;") && line_len <= 6) ||
     (line.contains("vkBAsc028") && line_len <= 13)
@@ -102,15 +102,19 @@ fn set_layout(file_content:String) -> HashMap<char,char>{
     layout
 }
 
+//デフォルトのレイアウト順にクロージャにbeforeキーとafterキーを渡す
 fn print_layout<C>(layout:HashMap<char,char>,closure:C) where C : Fn(char,char,i32)->i32{
   let default_layout = r"1234567890-^\QWERTYUIOP@[ASDFGHJKL;:]ZXCVBNM,./\".to_string();
-  //クロージャ内で使用可能な、反復処理とは独立した変数
+  //クロージャの反復実行とは独立した変数
   let mut int_buff = 0;
-  //デフォルトのレイアウト順にクロージャにbeforeキーとafterキーを渡す
   for default_key in default_layout.chars() {
      match layout.get(&default_key) {
          Some(after_key) => {
-           int_buff = closure(default_key,*after_key,int_buff);
+             //デフォルトレイアウトの端に到達した場合「#」をクロージャに渡す。
+             int_buff = closure(default_key,*after_key,int_buff);
+             if default_key == '\\' || default_key == '[' || default_key == ']' {
+                 int_buff = closure('#','#',int_buff);
+             }
          },
          None => {
            println!("null")
@@ -118,5 +122,4 @@ fn print_layout<C>(layout:HashMap<char,char>,closure:C) where C : Fn(char,char,i
      }
 
   }
-
 }
