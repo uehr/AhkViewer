@@ -120,6 +120,5 @@ fn print_layout<C>(layout:HashMap<char,char>,closure:C) where C : Fn(char,char,i
            println!("null")
          }
      }
-
   }
 }
