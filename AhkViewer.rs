@@ -25,22 +25,27 @@ fn main(){
 
     println!(" ➖ {} ➖",get_file_name(path_str));
     let layout = set_layout(file_content.replace(" ",""));
-    print_layout(layout,|before_key,after_key,indent_count|{
-           //デフォルトレイアウトの端に到達した場合「#」が渡される
-           if before_key == '#' {
-             if indent_count < 3 {
-               print!("\n ");
-               for _ in 0..indent_count {
-                   print!(" ");
-               }
-               return indent_count + 1
-             }
-           }else{
-             print!(" {} ",after_key);
-           }
-           return indent_count
+
+    // キーボードレイアウトを行に分解
+    let keyboard_lines = make_keyboard_lines(|key| {
+        match key {
+            '\\' | '[' | ']' => true,
+            _ => false
         }
-    );
+    });
+
+    // レイアウトをインデントしながら回す
+    let mut indent = 0;
+    for line in keyboard_lines {
+        for _ in 0..indent {
+            print!(" ");
+        }
+        if indent < 3 {
+            indent += 1;
+        }
+        print_layout_line(& layout, & line);
+        println!("");
+    }
 }
 
 fn to_char_upper(from:String) -> char {
@@ -102,21 +107,33 @@ fn set_layout(file_content:String) -> HashMap<char,char>{
     layout
 }
 
-//デフォルトのレイアウト順にクロージャにbeforeキーとafterキーを渡す
-fn print_layout<C>(layout:HashMap<char,char>,closure:C) where C : Fn(char,char,i32)->i32{
-  let default_layout = r"1234567890-^\QWERTYUIOP@[ASDFGHJKL;:]ZXCVBNM,./\".to_string();
-  //クロージャの反復実行とは独立した変数
-  let mut int_buff = 0;
-  for default_key in default_layout.chars() {
-     match layout.get(&default_key) {
-         Some(after_key) => {
-             //デフォルトレイアウトの端に到達した場合「#」をクロージャに渡す。
-             int_buff = closure(default_key,*after_key,int_buff);
-             if default_key == '\\' || default_key == '[' || default_key == ']' {
-                 int_buff = closure('#','#',int_buff);
-             }
-         },
-         None => {}
-     }
-  }
+// 1文字ごとに文字を変換しながら出力する
+fn print_layout_line(layout: &HashMap<char, char>, line: &String) {
+    for key in line.chars() {
+        match layout.get(&key) {
+            Some(after_key) => {
+                print!(" {} ", after_key);
+            },
+            None => {
+                println!("null")
+            }
+        }
+    }
+}
+
+// キーボードレイアウトを与えられたクロージャによって行単位に分割する
+fn make_keyboard_lines<C>(closure: C) -> Vec<String> where C: Fn(char) -> bool {
+    let default_layout = r"1234567890-^\QWERTYUIOP@[ASDFGHJKL;:]ZXCVBNM,./\";
+
+    let mut vec = vec![];
+    let mut s = "".to_string();
+    for c in default_layout.chars() {
+        s.push(c);
+        if closure(c) {
+            vec.push(s);
+            s = "".to_string();
+        }
+    }
+    vec.push(s);
+    vec
 }
