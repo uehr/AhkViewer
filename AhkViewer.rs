@@ -120,3 +120,17 @@ fn print_layout<C>(layout:HashMap<char,char>,closure:C) where C : Fn(char,char,i
      }
   }
 }
+
+// 1文字ごとに文字を変換しながら出力する
+fn print_layout_line(layout: &HashMap<char, char>, line: &String) {
+    for key in line.chars() {
+        match layout.get(&key) {
+            Some(after_key) => {
+                print!(" {} ", after_key);
+            },
+            None => {
+                println!("null")
+            }
+        }
+    }
+}
