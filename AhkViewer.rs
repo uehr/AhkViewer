@@ -25,22 +25,27 @@ fn main(){
 
     println!(" ➖ {} ➖",get_file_name(path_str));
     let layout = set_layout(file_content.replace(" ",""));
-    print_layout(layout,|before_key,after_key,indent_count|{
-           //デフォルトレイアウトの端に到達した場合「#」が渡される
-           if before_key == '#' {
-             if indent_count < 3 {
-               print!("\n ");
-               for _ in 0..indent_count {
-                   print!(" ");
-               }
-               return indent_count + 1
-             }
-           }else{
-             print!(" {} ",after_key);
-           }
-           return indent_count
+
+    // キーボードレイアウトを行に分解
+    let keyboard_lines = make_keyboard_lines(|key| {
+        match key {
+            '\\' | '[' | ']' => true,
+            _ => false
         }
-    );
+    });
+
+    // レイアウトをインデントしながら回す
+    let mut indent = 0;
+    for line in keyboard_lines {
+        for _ in 0..indent {
+            print!(" ");
+        }
+        if indent < 3 {
+            indent += 1;
+        }
+        print_layout_line(& layout, & line);
+        println!("");
+    }
 }
 
 fn to_char_upper(from:String) -> char {
