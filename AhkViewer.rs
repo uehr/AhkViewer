@@ -134,3 +134,20 @@ fn print_layout_line(layout: &HashMap<char, char>, line: &String) {
         }
     }
 }
+
+// キーボードレイアウトを与えられたクロージャによって行単位に分割する
+fn make_keyboard_lines<C>(closure: C) -> Vec<String> where C: Fn(char) -> bool {
+    let default_layout = r"1234567890-^\QWERTYUIOP@[ASDFGHJKL;:]ZXCVBNM,./\";
+
+    let mut vec = vec![];
+    let mut s = "".to_string();
+    for c in default_layout.chars() {
+        s.push(c);
+        if closure(c) {
+            vec.push(s);
+            s = "".to_string();
+        }
+    }
+    vec.push(s);
+    vec
+}
