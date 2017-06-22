@@ -116,9 +116,7 @@ fn print_layout<C>(layout:HashMap<char,char>,closure:C) where C : Fn(char,char,i
                  int_buff = closure('#','#',int_buff);
              }
          },
-         None => {
-           println!("null")
-         }
+         None => {}
      }
   }
 }
