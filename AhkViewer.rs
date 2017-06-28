@@ -40,6 +40,7 @@ fn main(){
         for _ in 0..indent {
             print!(" ");
         }
+
         print_layout_line(& layout, & line);
         if indent < 3 {
             println!("");
